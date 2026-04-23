@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>灌木新媒体 | 看见中国文化</title>
-  <meta name="description" content="灌木新媒体团队聚焦中国文化与大众娱乐内容的创意传播，用短视频重建大众观看。" />
+  <title>灌木新媒体 看见中国文化</title>
+  <meta name="description" content="灌木新媒体团队聚焦中国文化与大众娱乐内容的创意传播 用短视频重建大众观看" />
   <style>
     :root {
-      --paper: #f7f4ec;
-      --paper-2: #fffdf8;
-      --ink: #111;
-      --muted: #5f5a50;
-      --green: #1f4a2e;
-      --line: rgba(17, 17, 17, .1);
-      --shadow: 0 28px 80px rgba(20, 18, 14, .12);
-      --strong: 0 36px 110px rgba(20, 18, 14, .2);
+      --paper: #070807;
+      --paper-2: #10120f;
+      --ink: #f4f1e8;
+      --muted: #aaa493;
+      --green: #c6e87a;
+      --line: rgba(255, 255, 255, .1);
+      --surface: rgba(255, 255, 255, .055);
+      --surface-strong: rgba(255, 255, 255, .09);
+      --shadow: 0 28px 80px rgba(0, 0, 0, .42);
+      --strong: 0 38px 120px rgba(0, 0, 0, .58);
       --radius: 28px;
       --ease: cubic-bezier(.2, .9, .2, 1);
     }
@@ -25,14 +27,19 @@
 
     html {
       scroll-behavior: smooth;
+      background: var(--paper);
     }
 
     body {
       margin: 0;
-      background: var(--paper);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(88, 98, 66, .28), transparent 34%),
+        linear-gradient(180deg, #12140f 0%, var(--paper) 44%, #040504 100%);
       color: var(--ink);
       font-family: "Source Han Serif SC", "Noto Serif SC", "Microsoft YaHei UI", sans-serif;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
     a {
@@ -58,7 +65,7 @@
       align-items: center;
       gap: 20px;
       min-height: 70px;
-      background: rgba(247, 244, 236, .88);
+      background: rgba(7, 8, 7, .78);
       backdrop-filter: blur(18px);
     }
 
@@ -75,9 +82,8 @@
     .logo img {
       width: 26px;
       height: 26px;
-      border-radius: 8px;
-      object-fit: cover;
-      mix-blend-mode: multiply;
+      object-fit: contain;
+      filter: brightness(1.42) contrast(1.03) drop-shadow(0 0 14px rgba(198, 232, 122, .16));
     }
 
     .menu {
@@ -91,9 +97,9 @@
     .control {
       border: 0;
       border-radius: 999px;
-      background: rgba(255, 253, 248, .82);
+      background: rgba(255, 255, 255, .075);
       color: var(--ink);
-      box-shadow: 0 10px 30px rgba(20, 18, 14, .08);
+      box-shadow: 0 12px 34px rgba(0, 0, 0, .26);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -108,7 +114,7 @@
     .button:hover,
     .control:hover {
       transform: translateY(-2px);
-      background: #fff;
+      background: rgba(255, 255, 255, .14);
       box-shadow: var(--shadow);
     }
 
@@ -131,13 +137,11 @@
     }
 
     .hero-mark {
-      width: 56px;
-      height: 56px;
+      width: 62px;
+      height: 62px;
       margin-bottom: 34px;
-      border-radius: 18px;
-      object-fit: cover;
-      mix-blend-mode: multiply;
-      box-shadow: 0 18px 50px rgba(20, 18, 14, .12);
+      object-fit: contain;
+      filter: brightness(1.46) contrast(1.03) drop-shadow(0 22px 48px rgba(0, 0, 0, .5));
     }
 
     h1,
@@ -148,17 +152,20 @@
     }
 
     h1 {
-      font-size: clamp(56px, 11vw, 150px);
-      line-height: .92;
-      letter-spacing: -.1em;
+      max-width: 100%;
+      font-size: clamp(40px, 9.8vw, 142px);
+      line-height: .94;
+      letter-spacing: -.15em;
       font-weight: 900;
+      white-space: nowrap;
     }
 
     .lead {
       margin-top: 28px;
-      color: #25231f;
+      color: rgba(244, 241, 232, .82);
       font-size: clamp(18px, 2vw, 28px);
       letter-spacing: .02em;
+      white-space: nowrap;
     }
 
     .hero-actions {
@@ -174,7 +181,7 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
-      opacity: .36;
+      opacity: .48;
       z-index: 1;
     }
 
@@ -193,7 +200,7 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      filter: saturate(.84) contrast(.96);
+      filter: saturate(.86) brightness(.66) contrast(1.08);
     }
 
     .float-tile:nth-child(1) { left: 6%; top: 18%; --r: -8deg; }
@@ -218,12 +225,17 @@
       line-height: .95;
       letter-spacing: -.08em;
       font-weight: 900;
+      white-space: nowrap;
     }
 
     .note {
       max-width: 420px;
       color: var(--muted);
       font-size: 16px;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
     .brief {
@@ -234,10 +246,11 @@
 
     .card {
       border-radius: var(--radius);
-      background: rgba(255, 253, 248, .86);
+      background: var(--surface);
       box-shadow: var(--shadow);
       padding: 30px;
       min-height: 240px;
+      border: 1px solid var(--line);
       transition: transform .5s var(--ease), box-shadow .5s var(--ease), opacity .5s var(--ease);
     }
 
@@ -253,11 +266,12 @@
       align-items: center;
       border-radius: 999px;
       padding: 5px 11px;
-      background: rgba(17, 17, 17, .06);
+      background: rgba(255, 255, 255, .08);
       color: var(--green);
       font-size: 13px;
       font-weight: 700;
       margin-bottom: 18px;
+      white-space: nowrap;
     }
 
     h3 {
@@ -265,12 +279,19 @@
       line-height: 1.05;
       letter-spacing: -.06em;
       font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .card p {
       margin-top: 18px;
       color: var(--muted);
       max-width: 520px;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
     .culture-grid {
@@ -311,10 +332,11 @@
 
     .words span {
       border-radius: 999px;
-      background: rgba(17, 17, 17, .06);
+      background: rgba(255, 255, 255, .08);
       padding: 7px 12px;
-      color: #2f2b25;
+      color: rgba(244, 241, 232, .78);
       font-size: 14px;
+      white-space: nowrap;
     }
 
     .case-shell {
@@ -330,7 +352,7 @@
       scroll-snap-type: x mandatory;
       padding: 8px 0 32px;
       scrollbar-width: thin;
-      scrollbar-color: rgba(17, 17, 17, .25) transparent;
+      scrollbar-color: rgba(255, 255, 255, .26) transparent;
     }
 
     .cases::-webkit-scrollbar {
@@ -339,15 +361,16 @@
 
     .cases::-webkit-scrollbar-thumb {
       border-radius: 999px;
-      background: rgba(17, 17, 17, .22);
+      background: rgba(255, 255, 255, .24);
     }
 
     .case-card {
       scroll-snap-align: center;
       border-radius: 34px;
       overflow: hidden;
-      background: var(--paper-2);
+      background: var(--surface);
       box-shadow: var(--shadow);
+      border: 1px solid var(--line);
       transition: transform .52s var(--ease), opacity .52s var(--ease), box-shadow .52s var(--ease);
     }
 
@@ -363,7 +386,7 @@
 
     .video-frame {
       aspect-ratio: 9 / 16;
-      background: #111;
+      background: #050605;
       overflow: hidden;
     }
 
@@ -386,6 +409,9 @@
       margin-top: 7px;
       color: var(--muted);
       font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .case-controls {
@@ -416,14 +442,19 @@
 
     .brand-wall {
       border-radius: 36px;
-      background: #111;
-      color: #fff;
+      background: rgba(255, 255, 255, .07);
+      color: var(--ink);
       padding: 42px;
       box-shadow: var(--strong);
+      border: 1px solid var(--line);
     }
 
     .brand-wall p {
-      color: rgba(255, 255, 255, .72);
+      color: var(--muted);
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
     .brand-grid {
@@ -439,10 +470,11 @@
       place-items: center;
       border-radius: 20px;
       background: rgba(255, 255, 255, .08);
-      color: rgba(255, 255, 255, .86);
+      color: rgba(244, 241, 232, .88);
       text-align: center;
       padding: 14px;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .join {
@@ -462,6 +494,7 @@
       color: var(--muted);
       font-size: 13px;
       text-align: center;
+      white-space: nowrap;
     }
 
     @media (max-width: 880px) {
@@ -500,11 +533,11 @@
       }
 
       h1 {
-        font-size: clamp(52px, 17vw, 86px);
+        font-size: clamp(34px, 9.4vw, 46px);
       }
 
       .lead {
-        font-size: 17px;
+        font-size: 15px;
       }
 
       .card,
@@ -526,7 +559,7 @@
   <div class="page">
     <header class="nav">
       <a class="logo" href="#top" aria-label="灌木新媒体">
-        <img src="assets/logo/bushes-logo-stack.png" alt="灌木 Logo" />
+        <img src="assets/logo/bushes-logo-stack-transparent.png" alt="灌木 Logo" />
         <span>Shrub Media</span>
       </a>
       <nav class="menu" aria-label="页面导航">
@@ -547,9 +580,9 @@
           <div class="float-tile"><video src="assets/videos/video-21.mp4" muted autoplay loop playsinline></video></div>
         </div>
         <div class="hero-inner">
-          <img class="hero-mark" src="assets/logo/bushes-logo-stack.png" alt="灌木 Logo" />
-          <h1>看见<br />中国文化</h1>
-          <p class="lead">用短视频重建大众观看。</p>
+          <img class="hero-mark" src="assets/logo/bushes-logo-stack-transparent.png" alt="灌木 Logo" />
+          <h1>看见中国文化</h1>
+          <p class="lead">用短视频重建大众观看</p>
           <div class="hero-actions">
             <a class="button" href="#cases">看案例</a>
             <a class="button" href="#mission">了解团队</a>
@@ -560,18 +593,18 @@
       <section id="about">
         <div class="section-head">
           <h2>灌木之上</h2>
-          <p class="note">AI 与 IP 的内容底座。</p>
+          <p class="note">AI 与 IP 的内容底座</p>
         </div>
         <div class="brief">
           <article class="card">
             <span class="kicker">Shrub Culture</span>
-            <h3>技术进入内容</h3>
-            <p>灌木文化聚焦人工智能与动漫 IP 创制，自主研发 AI 全流程动画生产平台，持续推动内容生产方式升级。</p>
+            <h3>让技术进入内容生产</h3>
+            <p>灌木文化聚焦人工智能与动漫 IP 创制 自主研发 AI 全流程动画生产平台 持续推动内容生产方式升级</p>
           </article>
           <article class="card">
             <span class="kicker">Public Proof</span>
-            <h3>被验证的能力</h3>
-            <p>公司深度服务中央部委、地方文旅机构及大文娱产业，参与 2026 年春晚 AI 视效制作，并共建智能创意内容生成与沉浸体验北京市重点实验室。</p>
+            <h3>公司能力被持续验证</h3>
+            <p>公司深度服务中央部委 地方文旅机构及大文娱产业 参与 2026 年春晚 AI 视效制作 并共建北京市重点实验室</p>
           </article>
         </div>
       </section>
@@ -579,26 +612,26 @@
       <section id="mission">
         <div class="section-head">
           <h2>我们看见</h2>
-          <p class="note">文化需要新的观看方式。</p>
+          <p class="note">文化需要新的观看方式</p>
         </div>
         <div class="card">
           <span class="kicker">Mission</span>
-          <h3>中国文化不缺内容，缺少进入当代观看的方式。</h3>
-          <p>灌木新媒体团队聚焦中国文化与大众娱乐内容的创意传播。我们以短视频、AIGC 与平台方法，让城市、非遗、人文与大众娱乐重新进入公共视野。</p>
+          <h3>让中国文化进入当代观看</h3>
+          <p>灌木新媒体团队聚焦中国文化与大众娱乐内容的创意传播 以短视频 AIGC 与平台方法 让城市 非遗 人文与大众娱乐重新进入公共视野</p>
         </div>
       </section>
 
       <section>
         <div class="section-head">
           <h2>两条内容线</h2>
-          <p class="note">中国文化 / 娱乐文化</p>
+          <p class="note">中国文化与娱乐文化</p>
         </div>
         <div class="culture-grid">
           <article class="card culture-card">
             <div>
               <span class="kicker">Chinese Culture</span>
               <h3>中国文化</h3>
-              <p>不止于传统。</p>
+              <p>不止于传统</p>
             </div>
             <div class="words">
               <span>城市</span>
@@ -612,7 +645,7 @@
             <div>
               <span class="kicker">Public Culture</span>
               <h3>娱乐文化</h3>
-              <p>不止于消遣。</p>
+              <p>不止于消遣</p>
             </div>
             <div class="words">
               <span>运动</span>
@@ -628,7 +661,7 @@
       <section id="cases">
         <div class="section-head">
           <h2>代表案例</h2>
-          <p class="note">竖屏内容，横向观看。</p>
+          <p class="note">竖屏内容 横向观看</p>
         </div>
         <div class="case-shell">
           <div class="cases" id="caseList">
@@ -683,13 +716,13 @@
       <section id="method">
         <div class="section-head">
           <h2>传播方法</h2>
-          <p class="note">从文化到观看。</p>
+          <p class="note">从文化到观看</p>
         </div>
         <div class="method">
-          <article class="card step"><span class="kicker">01</span><strong>发现</strong><p>找到大众入口。</p></article>
-          <article class="card step"><span class="kicker">02</span><strong>转译</strong><p>建立视频语言。</p></article>
-          <article class="card step"><span class="kicker">03</span><strong>制作</strong><p>形成视觉记忆。</p></article>
-          <article class="card step"><span class="kicker">04</span><strong>传播</strong><p>进入公共视野。</p></article>
+          <article class="card step"><span class="kicker">01</span><strong>发现</strong><p>找到大众入口</p></article>
+          <article class="card step"><span class="kicker">02</span><strong>转译</strong><p>建立视频语言</p></article>
+          <article class="card step"><span class="kicker">03</span><strong>制作</strong><p>形成视觉记忆</p></article>
+          <article class="card step"><span class="kicker">04</span><strong>传播</strong><p>进入公共视野</p></article>
         </div>
       </section>
 
@@ -697,9 +730,9 @@
         <div class="brand-wall">
           <div class="section-head">
             <h2>合作底座</h2>
-            <p class="note">来自灌木文化。</p>
+            <p class="note">来自灌木文化</p>
           </div>
-          <p>依托灌木文化在 AIGC、动漫 IP、文旅 IP、城市 IP 孵化与商业化上的综合能力，灌木新媒体将内容创作、视觉技术与平台传播连接为同一条生产链路。</p>
+          <p>依托灌木文化在 AIGC 动漫 IP 文旅 IP 城市 IP 孵化与商业化上的综合能力 灌木新媒体将内容创作 视觉技术与平台传播连接为同一条生产链路</p>
           <div class="brand-grid">
             <div class="brand-item">AIGC</div>
             <div class="brand-item">动漫 IP</div>
@@ -712,7 +745,7 @@
 
       <section class="join">
         <div>
-          <h2>共创中国文化的新表达。</h2>
+          <h2>共创中国文化的新表达</h2>
           <div class="hero-actions">
             <a class="button" href="https://www.shrub.com.cn/" target="_blank" rel="noreferrer">公司官网</a>
             <a class="button" href="#cases">回看案例</a>
@@ -722,7 +755,7 @@
     </main>
 
     <footer>
-      © Shrub Media Creation. 中国文化与大众娱乐内容的创意传播团队。
+      © Shrub Media Creation 中国文化与大众娱乐内容的创意传播团队
     </footer>
   </div>
 
