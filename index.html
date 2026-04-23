@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>灌木新媒体 | 看见中国文化</title>
+  <meta name="description" content="灌木新媒体团队聚焦中国文化与大众娱乐内容的创意传播，用短视频重建大众观看。" />
+  <style>
+    :root {
+      --paper: #f7f4ec;
+      --paper-2: #fffdf8;
+      --ink: #111;
+      --muted: #5f5a50;
+      --green: #1f4a2e;
+      --line: rgba(17, 17, 17, .1);
+      --shadow: 0 28px 80px rgba(20, 18, 14, .12);
+      --strong: 0 36px 110px rgba(20, 18, 14, .2);
+      --radius: 28px;
+      --ease: cubic-bezier(.2, .9, .2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Microsoft YaHei UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 36px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      min-height: 70px;
+      background: rgba(247, 244, 236, .88);
+      backdrop-filter: blur(18px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .logo img {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      object-fit: cover;
+      mix-blend-mode: multiply;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .menu a,
+    .button,
+    .control {
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 253, 248, .82);
+      color: var(--ink);
+      box-shadow: 0 10px 30px rgba(20, 18, 14, .08);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 15px;
+      transition: transform .42s var(--ease), box-shadow .42s var(--ease), background .42s var(--ease);
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .menu a:hover,
+    .button:hover,
+    .control:hover {
+      transform: translateY(-2px);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      min-height: calc(100vh - 70px);
+      display: grid;
+      place-items: center;
+      padding: 70px 0 90px;
+      position: relative;
+    }
+
+    .hero-inner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-mark {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 34px;
+      border-radius: 18px;
+      object-fit: cover;
+      mix-blend-mode: multiply;
+      box-shadow: 0 18px 50px rgba(20, 18, 14, .12);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(56px, 11vw, 150px);
+      line-height: .92;
+      letter-spacing: -.1em;
+      font-weight: 900;
+    }
+
+    .lead {
+      margin-top: 28px;
+      color: #25231f;
+      font-size: clamp(18px, 2vw, 28px);
+      letter-spacing: .02em;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 34px;
+    }
+
+    .float-videos {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: .36;
+      z-index: 1;
+    }
+
+    .float-tile {
+      position: absolute;
+      width: clamp(92px, 9vw, 150px);
+      aspect-ratio: 9 / 16;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transform: rotate(var(--r));
+    }
+
+    .float-tile video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(.84) contrast(.96);
+    }
+
+    .float-tile:nth-child(1) { left: 6%; top: 18%; --r: -8deg; }
+    .float-tile:nth-child(2) { right: 8%; top: 14%; --r: 7deg; }
+    .float-tile:nth-child(3) { left: 16%; bottom: 12%; --r: 5deg; }
+    .float-tile:nth-child(4) { right: 18%; bottom: 10%; --r: -6deg; }
+
+    section {
+      padding: 88px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 30px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: clamp(38px, 5.8vw, 84px);
+      line-height: .95;
+      letter-spacing: -.08em;
+      font-weight: 900;
+    }
+
+    .note {
+      max-width: 420px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .brief {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      border-radius: var(--radius);
+      background: rgba(255, 253, 248, .86);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      min-height: 240px;
+      transition: transform .5s var(--ease), box-shadow .5s var(--ease), opacity .5s var(--ease);
+    }
+
+    .card:hover {
+      transform: translateY(-7px);
+      box-shadow: var(--strong);
+    }
+
+    .kicker {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 28px;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 11px;
+      background: rgba(17, 17, 17, .06);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    h3 {
+      font-size: clamp(24px, 3vw, 40px);
+      line-height: 1.05;
+      letter-spacing: -.06em;
+      font-weight: 900;
+    }
+
+    .card p {
+      margin-top: 18px;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    .culture-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .culture-card {
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .culture-card::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      right: -70px;
+      bottom: -80px;
+      border-radius: 70px;
+      background: var(--green);
+      opacity: .08;
+      transform: rotate(18deg);
+    }
+
+    .words {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .words span {
+      border-radius: 999px;
+      background: rgba(17, 17, 17, .06);
+      padding: 7px 12px;
+      color: #2f2b25;
+      font-size: 14px;
+    }
+
+    .case-shell {
+      position: relative;
+    }
+
+    .cases {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(230px, 31%);
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 8px 0 32px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(17, 17, 17, .25) transparent;
+    }
+
+    .cases::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    .cases::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: rgba(17, 17, 17, .22);
+    }
+
+    .case-card {
+      scroll-snap-align: center;
+      border-radius: 34px;
+      overflow: hidden;
+      background: var(--paper-2);
+      box-shadow: var(--shadow);
+      transition: transform .52s var(--ease), opacity .52s var(--ease), box-shadow .52s var(--ease);
+    }
+
+    .cases:hover .case-card:not(:hover) {
+      opacity: .42;
+      transform: scale(.96);
+    }
+
+    .case-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: var(--strong);
+    }
+
+    .video-frame {
+      aspect-ratio: 9 / 16;
+      background: #111;
+      overflow: hidden;
+    }
+
+    .video-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .case-text {
+      padding: 18px 20px 22px;
+    }
+
+    .case-text h3 {
+      font-size: 28px;
+    }
+
+    .case-text p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .case-controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: -8px;
+    }
+
+    .method {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .step strong {
+      font-size: clamp(42px, 6vw, 74px);
+      line-height: .9;
+      letter-spacing: -.08em;
+    }
+
+    .brand-wall {
+      border-radius: 36px;
+      background: #111;
+      color: #fff;
+      padding: 42px;
+      box-shadow: var(--strong);
+    }
+
+    .brand-wall p {
+      color: rgba(255, 255, 255, .72);
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .brand-item {
+      min-height: 90px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .08);
+      color: rgba(255, 255, 255, .86);
+      text-align: center;
+      padding: 14px;
+      font-weight: 700;
+    }
+
+    .join {
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .join h2 {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    footer {
+      padding: 36px 0 60px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 880px) {
+      .menu {
+        display: none;
+      }
+
+      .hero {
+        min-height: 78vh;
+      }
+
+      .section-head,
+      .brief,
+      .culture-grid,
+      .method {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .cases {
+        grid-auto-columns: minmax(230px, 78%);
+      }
+
+      .brand-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100vw - 24px, 1180px);
+      }
+
+      section {
+        padding: 58px 0;
+      }
+
+      h1 {
+        font-size: clamp(52px, 17vw, 86px);
+      }
+
+      .lead {
+        font-size: 17px;
+      }
+
+      .card,
+      .brand-wall {
+        padding: 22px;
+      }
+
+      .cases {
+        grid-auto-columns: 86%;
+      }
+
+      .float-videos {
+        opacity: .18;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <a class="logo" href="#top" aria-label="灌木新媒体">
+        <img src="assets/logo/bushes-logo-stack.png" alt="灌木 Logo" />
+        <span>Shrub Media</span>
+      </a>
+      <nav class="menu" aria-label="页面导航">
+        <a href="#about">公司</a>
+        <a href="#mission">使命</a>
+        <a href="#cases">案例</a>
+        <a href="#method">方法</a>
+        <a href="#partners">合作</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="float-videos" aria-hidden="true">
+          <div class="float-tile"><video src="assets/videos/video-08.mp4" muted autoplay loop playsinline></video></div>
+          <div class="float-tile"><video src="assets/videos/video-09.mp4" muted autoplay loop playsinline></video></div>
+          <div class="float-tile"><video src="assets/videos/video-13.mp4" muted autoplay loop playsinline></video></div>
+          <div class="float-tile"><video src="assets/videos/video-21.mp4" muted autoplay loop playsinline></video></div>
+        </div>
+        <div class="hero-inner">
+          <img class="hero-mark" src="assets/logo/bushes-logo-stack.png" alt="灌木 Logo" />
+          <h1>看见<br />中国文化</h1>
+          <p class="lead">用短视频重建大众观看。</p>
+          <div class="hero-actions">
+            <a class="button" href="#cases">看案例</a>
+            <a class="button" href="#mission">了解团队</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-head">
+          <h2>灌木之上</h2>
+          <p class="note">AI 与 IP 的内容底座。</p>
+        </div>
+        <div class="brief">
+          <article class="card">
+            <span class="kicker">Shrub Culture</span>
+            <h3>技术进入内容</h3>
+            <p>灌木文化聚焦人工智能与动漫 IP 创制，自主研发 AI 全流程动画生产平台，持续推动内容生产方式升级。</p>
+          </article>
+          <article class="card">
+            <span class="kicker">Public Proof</span>
+            <h3>被验证的能力</h3>
+            <p>公司深度服务中央部委、地方文旅机构及大文娱产业，参与 2026 年春晚 AI 视效制作，并共建智能创意内容生成与沉浸体验北京市重点实验室。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="mission">
+        <div class="section-head">
+          <h2>我们看见</h2>
+          <p class="note">文化需要新的观看方式。</p>
+        </div>
+        <div class="card">
+          <span class="kicker">Mission</span>
+          <h3>中国文化不缺内容，缺少进入当代观看的方式。</h3>
+          <p>灌木新媒体团队聚焦中国文化与大众娱乐内容的创意传播。我们以短视频、AIGC 与平台方法，让城市、非遗、人文与大众娱乐重新进入公共视野。</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>两条内容线</h2>
+          <p class="note">中国文化 / 娱乐文化</p>
+        </div>
+        <div class="culture-grid">
+          <article class="card culture-card">
+            <div>
+              <span class="kicker">Chinese Culture</span>
+              <h3>中国文化</h3>
+              <p>不止于传统。</p>
+            </div>
+            <div class="words">
+              <span>城市</span>
+              <span>非遗</span>
+              <span>民俗</span>
+              <span>人文</span>
+              <span>科技</span>
+            </div>
+          </article>
+          <article class="card culture-card">
+            <div>
+              <span class="kicker">Public Culture</span>
+              <h3>娱乐文化</h3>
+              <p>不止于消遣。</p>
+            </div>
+            <div class="words">
+              <span>运动</span>
+              <span>美食</span>
+              <span>摄影</span>
+              <span>健康</span>
+              <span>旅行</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="cases">
+        <div class="section-head">
+          <h2>代表案例</h2>
+          <p class="note">竖屏内容，横向观看。</p>
+        </div>
+        <div class="case-shell">
+          <div class="cases" id="caseList">
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-08.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>皮影</h3><p>光影里的民间想象</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-09.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>汉服</h3><p>衣冠中的审美秩序</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-13.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>京剧</h3><p>一眼辨出生旦净</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-21.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>醒狮</h3><p>民俗动作的精神性</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-10.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>茶道</h3><p>日常里的东方礼</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-11.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>围棋</h3><p>黑白之间的推演</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-12.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>蹴鞠</h3><p>古代运动的回声</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-17.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>婚礼</h3><p>传统礼服的颜色</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-18.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>唢呐</h3><p>声音里的民俗场</p></div>
+            </article>
+            <article class="case-card">
+              <div class="video-frame"><video src="assets/videos/video-19.mp4" muted playsinline preload="metadata" controls></video></div>
+              <div class="case-text"><h3>非遗</h3><p>古代娱乐的今天</p></div>
+            </article>
+          </div>
+          <div class="case-controls">
+            <button class="control" type="button" data-scroll="-1">向左</button>
+            <button class="control" type="button" data-scroll="1">向右</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="method">
+        <div class="section-head">
+          <h2>传播方法</h2>
+          <p class="note">从文化到观看。</p>
+        </div>
+        <div class="method">
+          <article class="card step"><span class="kicker">01</span><strong>发现</strong><p>找到大众入口。</p></article>
+          <article class="card step"><span class="kicker">02</span><strong>转译</strong><p>建立视频语言。</p></article>
+          <article class="card step"><span class="kicker">03</span><strong>制作</strong><p>形成视觉记忆。</p></article>
+          <article class="card step"><span class="kicker">04</span><strong>传播</strong><p>进入公共视野。</p></article>
+        </div>
+      </section>
+
+      <section id="partners">
+        <div class="brand-wall">
+          <div class="section-head">
+            <h2>合作底座</h2>
+            <p class="note">来自灌木文化。</p>
+          </div>
+          <p>依托灌木文化在 AIGC、动漫 IP、文旅 IP、城市 IP 孵化与商业化上的综合能力，灌木新媒体将内容创作、视觉技术与平台传播连接为同一条生产链路。</p>
+          <div class="brand-grid">
+            <div class="brand-item">AIGC</div>
+            <div class="brand-item">动漫 IP</div>
+            <div class="brand-item">春晚视效</div>
+            <div class="brand-item">文旅机构</div>
+            <div class="brand-item">重点实验室</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="join">
+        <div>
+          <h2>共创中国文化的新表达。</h2>
+          <div class="hero-actions">
+            <a class="button" href="https://www.shrub.com.cn/" target="_blank" rel="noreferrer">公司官网</a>
+            <a class="button" href="#cases">回看案例</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © Shrub Media Creation. 中国文化与大众娱乐内容的创意传播团队。
+    </footer>
+  </div>
+
+  <script>
+    const caseList = document.getElementById("caseList");
+    const caseVideos = Array.from(document.querySelectorAll(".case-card video"));
+
+    document.querySelectorAll(".case-card").forEach((card) => {
+      const video = card.querySelector("video");
+      card.addEventListener("mouseenter", async () => {
+        caseVideos.forEach((item) => {
+          if (item !== video) item.pause();
+        });
+        try {
+          video.muted = true;
+          await video.play();
+        } catch (error) {
+          // Browser autoplay policy may block playback until the user interacts.
+        }
+      });
+      card.addEventListener("mouseleave", () => {
+        video.pause();
+      });
+    });
+
+    document.querySelectorAll("[data-scroll]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const direction = Number(button.dataset.scroll);
+        caseList.scrollBy({
+          left: direction * caseList.clientWidth * .86,
+          behavior: "smooth"
+        });
+      });
+    });
+  </script>
+</body>
+</html>
