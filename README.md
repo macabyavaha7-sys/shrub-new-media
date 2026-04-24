@@ -9,6 +9,10 @@
 - `assets/videos/`：9:16 竖屏案例视频。
 - `docs/`：方案资料。
 
+## 文案规则
+
+后续官网文案遵循 `docs/copy-rules.md`。尤其避免“不是 A 是 B”“不是 A 而是 B”“不止于 A”的反向定义句式。
+
 ## 发布
 
 仓库开启 GitHub Pages 后，选择：
