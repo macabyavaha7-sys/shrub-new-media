@@ -880,165 +880,238 @@
       font-weight: 700;
     }
 
-    .city-stage {
+    .city-scene {
       position: relative;
       z-index: 8;
-      min-height: 640px;
-      transform-style: preserve-3d;
+      min-height: 760px;
       overflow: hidden;
+      perspective: 1500px;
+      transform-style: preserve-3d;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 28% 74%, rgba(201, 166, 106, .08), transparent 28%),
+        radial-gradient(circle at 72% 40%, rgba(201, 166, 106, .055), transparent 34%),
+        linear-gradient(180deg, rgba(3, 4, 3, .04), rgba(3, 4, 3, .16));
     }
 
-    .city-world-map {
+    .scene-layer {
       position: absolute;
-      inset: -8% -4% -4% -8%;
-      width: 112%;
-      height: 112%;
-      overflow: visible;
-      opacity: .92;
+      inset: 0;
+      pointer-events: none;
+      transform-style: preserve-3d;
     }
 
-    .city-line,
-    .city-route,
-    .city-structure,
-    .city-contour {
+    .scene-space {
+      z-index: 1;
+      opacity: .76;
+      background-image:
+        radial-gradient(circle at 18% 24%, rgba(240, 213, 154, .2) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 78% 18%, rgba(240, 213, 154, .18) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 54% 66%, rgba(240, 213, 154, .14) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 88% 72%, rgba(240, 213, 154, .16) 0 1px, transparent 1.5px);
+      filter: blur(.2px);
+    }
+
+    .terrain-layer {
+      z-index: 2;
+      transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), -280px) scale(1.08);
+      opacity: .7;
+    }
+
+    .terrain-layer svg,
+    .route-layer svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .terrain-line {
       fill: none;
+      stroke: rgba(201, 166, 106, .1);
+      stroke-width: .6;
+      vector-effect: non-scaling-stroke;
+      stroke-linecap: round;
+    }
+
+    .city-layer {
+      z-index: 3;
+      transform-style: preserve-3d;
+    }
+
+    .city-object {
+      position: absolute;
+      left: var(--x, 50%);
+      top: var(--y, 50%);
+      width: var(--w, 320px);
+      opacity: var(--opacity, .7);
+      filter:
+        blur(var(--blur, 0px))
+        drop-shadow(0 0 calc(18px * var(--glow, .3)) rgba(201, 166, 106, .28));
+      transform:
+        translate3d(calc(-50% + var(--scene-x, 0px)), calc(-50% + var(--scene-y, 0px)), var(--z, 0px))
+        scale(var(--scale, 1));
+      transform-style: preserve-3d;
+      transition: opacity .45s var(--ease), filter .45s var(--ease), transform .45s var(--ease);
+      pointer-events: auto;
+    }
+
+    .city-object:hover,
+    .city-object.is-active {
+      opacity: 1;
+      filter:
+        blur(0)
+        drop-shadow(0 0 22px rgba(240, 213, 154, .34));
+      z-index: 4;
+    }
+
+    .city-object svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .city-stroke {
+      fill: none;
+      stroke: rgba(201, 166, 106, .7);
+      stroke-width: .72;
       vector-effect: non-scaling-stroke;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
-    .city-line {
-      stroke: rgba(201, 166, 106, .16);
-      stroke-width: .6;
-    }
-
-    .city-contour {
-      stroke: rgba(201, 166, 106, .09);
+    .city-faint {
+      fill: none;
+      stroke: rgba(201, 166, 106, .22);
       stroke-width: .55;
+      vector-effect: non-scaling-stroke;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .city-structure {
-      stroke: rgba(201, 166, 106, .38);
-      stroke-width: .72;
+    .city-label {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      transform: translate(-50%, -14px);
+      color: rgba(244, 239, 228, .86);
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: clamp(18px, 2vw, 30px);
+      font-weight: 900;
+      line-height: 1.1;
+      white-space: nowrap;
+      text-shadow: 0 12px 38px rgba(0, 0, 0, .9);
     }
 
-    .city-route {
-      stroke: rgba(240, 213, 154, .7);
-      stroke-width: 1.1;
-      filter: drop-shadow(0 0 8px rgba(201, 166, 106, .22));
+    .city-label span {
+      display: block;
+      margin-top: 7px;
+      color: rgba(201, 166, 106, .72);
+      font-size: 12px;
+      letter-spacing: 1px;
     }
 
-    .city-dot {
-      fill: rgba(240, 213, 154, .88);
-      filter: drop-shadow(0 0 10px rgba(240, 213, 154, .4));
+    .route-layer {
+      z-index: 4;
+      transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), 40px);
+      opacity: .92;
+    }
+
+    .route-base,
+    .route-flow {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .route-base {
+      stroke: rgba(201, 166, 106, .2);
+      stroke-width: 1;
+    }
+
+    .route-flow {
+      stroke: rgba(240, 213, 154, .72);
+      stroke-width: 1.25;
+      stroke-dasharray: 90 760;
+      animation: routeFlow 6.5s linear infinite;
+      filter: url(#cityGlow);
+    }
+
+    .route-node {
+      fill: rgba(240, 213, 154, .82);
+      filter: url(#cityGlow);
+      transition: r .35s var(--ease), opacity .35s var(--ease);
+    }
+
+    .route-node.is-active {
+      r: 7;
+      opacity: 1;
+    }
+
+    @keyframes routeFlow {
+      to {
+        stroke-dashoffset: -850;
+      }
+    }
+
+    .city-copy-layer {
+      z-index: 5;
+      display: grid;
+      grid-template-columns: minmax(260px, 420px) 1fr;
+      gap: 48px;
+      align-items: start;
+      padding: 42px 0 0;
+      pointer-events: none;
+    }
+
+    .city-copy {
+      pointer-events: auto;
+    }
+
+    .city-copy h3 {
+      font-size: clamp(42px, 5.8vw, 86px);
+      line-height: .98;
+    }
+
+    .city-copy p {
+      margin-top: 18px;
+      color: rgba(201, 166, 106, .86);
+      font-family: "Microsoft YaHei", sans-serif;
+      font-size: clamp(18px, 2vw, 27px);
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     .city-legend {
-      position: absolute;
-      left: 0;
-      top: 110px;
-      z-index: 9;
       display: grid;
-      gap: 18px;
+      gap: 20px;
+      margin-top: 44px;
       color: rgba(244, 239, 228, .78);
       font-family: "Microsoft YaHei", sans-serif;
-      font-size: 20px;
+      font-size: 21px;
       font-weight: 700;
     }
 
-    .city-legend::before {
-      content: "";
-      position: absolute;
-      left: 22px;
-      top: 42px;
-      bottom: 42px;
-      width: 1px;
-      background: linear-gradient(180deg, rgba(201, 166, 106, .1), rgba(201, 166, 106, .56), rgba(201, 166, 106, .1));
-    }
-
     .city-legend span {
-      position: relative;
       display: grid;
-      grid-template-columns: 46px auto;
+      grid-template-columns: 48px auto;
       gap: 18px;
       align-items: center;
       white-space: nowrap;
     }
 
     .city-legend i {
-      position: relative;
-      z-index: 1;
       display: grid;
       place-items: center;
-      width: 46px;
-      height: 46px;
-      border: 1px solid rgba(201, 166, 106, .55);
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(201, 166, 106, .56);
       border-radius: 999px;
       color: rgba(201, 166, 106, .84);
       font-style: normal;
       font-size: 16px;
-      background: rgba(3, 4, 3, .52);
-    }
-
-    .city-node {
-      position: absolute;
-      color: var(--ink);
-      font-family: "Microsoft YaHei", sans-serif;
-      font-weight: 900;
-      transform: translate3d(var(--x), var(--y), var(--z));
-    }
-
-    .city-node span {
-      display: block;
-      margin-top: 6px;
-      color: rgba(201, 166, 106, .68);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .city-chongqing {
-      --x: 420px;
-      --y: 164px;
-      --z: 160px;
-      font-size: 28px;
-    }
-
-    .city-tianjin {
-      --x: 860px;
-      --y: 342px;
-      --z: -150px;
-      font-size: 26px;
-      opacity: .82;
-    }
-
-    .city-xian {
-      --x: 620px;
-      --y: 80px;
-      --z: -200px;
-      font-size: 22px;
-      opacity: .78;
-    }
-
-    .city-chengdu {
-      --x: 1040px;
-      --y: 92px;
-      --z: 40px;
-      font-size: 30px;
-      opacity: .84;
-    }
-
-    .city-output {
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      display: flex;
-      gap: 18px;
-      transform: translateX(-50%);
-      font-family: "Microsoft YaHei", sans-serif;
-      font-size: 14px;
-      font-weight: 900;
-      color: rgba(244, 239, 228, .78);
-      white-space: nowrap;
+      background: rgba(3, 4, 3, .46);
+      box-shadow: inset 0 0 18px rgba(201, 166, 106, .06);
     }
 
     .talent-layout {
@@ -1398,53 +1471,40 @@
         font-size: 34px;
       }
 
-      .city-stage {
-        min-height: 460px;
-        overflow: hidden;
+      .city-scene {
+        min-height: 640px;
+        border-radius: 18px;
       }
 
-      .city-world-map {
-        inset: 8% -60% -6% -70%;
-        width: 210%;
-        height: 96%;
+      .city-copy-layer {
+        grid-template-columns: 1fr;
+        padding-top: 18px;
+      }
+
+      .city-copy p {
+        white-space: normal;
       }
 
       .city-legend {
-        top: 8px;
-        left: 0;
         grid-template-columns: repeat(2, max-content);
-        gap: 10px 18px;
+        gap: 12px 16px;
+        margin-top: 22px;
         font-size: 13px;
       }
 
-      .city-legend::before {
-        display: none;
-      }
-
       .city-legend span {
-        grid-template-columns: 28px auto;
+        grid-template-columns: 30px auto;
         gap: 8px;
       }
 
       .city-legend i {
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
         font-size: 11px;
       }
 
-      .city-chongqing { --x: 0px; --y: 300px; font-size: 26px; }
-      .city-tianjin { --x: 210px; --y: 220px; font-size: 18px; }
-      .city-xian { --x: 118px; --y: 128px; font-size: 16px; }
-      .city-chengdu { --x: 250px; --y: 96px; font-size: 20px; }
-
-      .city-output {
-        position: relative;
-        left: auto;
-        bottom: auto;
-        margin-top: 20px;
-        justify-content: center;
-        transform: none;
-        flex-wrap: wrap;
+      .terrain-layer {
+        transform: translate3d(var(--scene-x, 0px), var(--scene-y, 0px), -260px) scale(1.5);
       }
 
       .lab-window {
@@ -1487,6 +1547,14 @@
         <stop offset="50%" stop-color="rgba(240,213,154,.62)" />
         <stop offset="100%" stop-color="rgba(201,166,106,.05)" />
       </linearGradient>
+      <filter id="cityGlow" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur stdDeviation="3.5" result="softGlow" />
+        <feColorMatrix in="softGlow" type="matrix" values="1 0 0 0 0.78 0 1 0 0 0.56 0 0 1 0 0.25 0 0 0 .7 0" result="goldGlow" />
+        <feMerge>
+          <feMergeNode in="goldGlow" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
     </defs>
   </svg>
 
@@ -1710,105 +1778,108 @@
       </section>
 
       <section class="module" id="city" data-section>
-        <div class="artifact" data-depth=".18" aria-hidden="true" style="width:820px;height:430px;left:-250px;bottom:40px;--o:.22;">
-          <svg viewBox="0 0 820 430">
-            <path class="gold-line" d="M20 346C142 270 218 344 334 248s222-50 318-136 114-72 158-62" />
-            <path class="gold-line" d="M40 392c120-70 204-20 318-110s228-54 318-132 106-60 130-54" />
-            <path class="gold-line" d="M124 254c108-26 184 8 274-66s192-54 276-92" />
-            <path class="gold-line" d="M474 92h140l52 70h-112l-80-70z" />
-          </svg>
-        </div>
-        <div class="module-head">
-          <div>
-            <span class="eyebrow">CITY IP</span>
-            <h2>城市文化增长</h2>
+        <div class="city-scene" data-city-scene>
+          <!-- Layer 1: deep background, noise and faint stars -->
+          <div class="scene-layer scene-space" data-scene-depth=".015" aria-hidden="true"></div>
+
+          <!-- Layer 2: terrain field and contour lines -->
+          <div class="scene-layer terrain-layer" data-scene-depth=".035" aria-hidden="true">
+            <svg viewBox="0 0 1280 720" preserveAspectRatio="none">
+              <path class="terrain-line" d="M-60 612c160-108 284-68 422-150 112-68 224-104 374-44 154 62 260 8 402-92 108-76 214-88 314-46" />
+              <path class="terrain-line" d="M-30 650c172-96 332-58 484-136 118-62 236-86 366-30 148 64 278 10 420-76 94-58 178-74 260-48" />
+              <path class="terrain-line" d="M20 568c118-44 214-46 318-10 108 38 190-10 288-66 116-68 230-52 342-10 128 48 234 10 330-56" />
+              <path class="terrain-line" d="M108 486c86-64 160-94 226-96 74-4 134 28 194 60 84 44 174 26 272-24 92-46 170-66 260-48" />
+              <path class="terrain-line" d="M390 682c122-74 230-98 332-76 86 18 174 6 264-34 96-42 194-54 316-12" />
+              <path class="terrain-line" d="M0 700h1280" />
+            </svg>
           </div>
-          <p class="note">地理 建筑 非遗 文创共同进入内容系统 让城市被看见 被记住 被转化</p>
-        </div>
-        <div class="city-stage" data-depth=".08">
-          <div class="city-legend" aria-hidden="true">
-            <span><i>地</i>地理</span>
-            <span><i>筑</i>建筑</span>
-            <span><i>遗</i>非遗</span>
-            <span><i>创</i>文创</span>
+
+          <!-- Layer 3: independent city SVG components with separate depth -->
+          <div class="scene-layer city-layer">
+            <article class="city-object" data-city="chongqing">
+              <div class="city-label">重庆<span>山城地理</span></div>
+              <svg viewBox="0 0 520 310" aria-hidden="true">
+                <path class="city-faint" d="M28 258c62-70 130-94 206-70 78 24 150 16 218-42" />
+                <path class="city-faint" d="M56 226c76-54 150-68 224-42 64 24 118 12 174-28" />
+                <path class="city-stroke" d="M46 286h408" />
+                <path class="city-stroke" d="M82 286v-88h34v88M132 286v-134h42v134M190 286v-106h40v106M250 286v-74h38v74" />
+                <path class="city-stroke" d="M72 286l90-136 78 136M104 248l54-74 52 74" />
+                <path class="city-stroke" d="M300 286c52-92 128-98 196-10" />
+                <path class="city-stroke" d="M318 286l88-104 86 104M352 244h104" />
+                <path class="city-stroke" d="M384 208v-74M360 164h48M408 164h48" />
+              </svg>
+            </article>
+
+            <article class="city-object" data-city="tianjin">
+              <div class="city-label">天津<span>建筑肌理</span></div>
+              <svg viewBox="0 0 480 280" aria-hidden="true">
+                <path class="city-faint" d="M28 244h424M56 222c88-26 176-30 264-14 66 12 110 2 150-32" />
+                <path class="city-stroke" d="M70 232h214" />
+                <path class="city-stroke" d="M92 232v-116h164v116" />
+                <path class="city-stroke" d="M112 232v-80M142 232v-80M172 232v-80M202 232v-80M232 232v-80" />
+                <path class="city-stroke" d="M108 116c38-46 84-46 126 0" />
+                <path class="city-stroke" d="M170 116V36M146 60h50" />
+                <path class="city-stroke" d="M294 232c20-102 102-140 172-76 54 52 28 138-60 164" />
+                <circle class="city-stroke" cx="374" cy="170" r="64" />
+                <path class="city-stroke" d="M374 106v128M310 170h128M334 126l86 88M420 126l-88 88" />
+              </svg>
+            </article>
+
+            <article class="city-object" data-city="xian">
+              <div class="city-label">西安<span>朝代记忆</span></div>
+              <svg viewBox="0 0 470 260" aria-hidden="true">
+                <path class="city-faint" d="M32 218c88-58 176-72 264-36 58 24 102 20 138-10" />
+                <path class="city-stroke" d="M72 198h320" />
+                <path class="city-stroke" d="M102 198v-46h260v46" />
+                <path class="city-stroke" d="M132 152l48-38 46 38M240 152l48-38 48 38" />
+                <path class="city-stroke" d="M140 198v-72M184 198v-50M230 198v-50M274 198v-50M318 198v-72" />
+                <path class="city-stroke" d="M78 218h336" />
+                <path class="city-stroke" d="M402 218c-30-52-20-106 30-144 28 54 16 104-30 144z" />
+                <path class="city-stroke" d="M432 74V28M414 48h34" />
+              </svg>
+            </article>
+
+            <article class="city-object" data-city="chengdu">
+              <div class="city-label">成都<span>城市物种</span></div>
+              <svg viewBox="0 0 360 250" aria-hidden="true">
+                <path class="city-faint" d="M28 214c70-44 132-54 188-30 42 18 76 12 116-14" />
+                <path class="city-stroke" d="M142 92c-22-36-4-78 42-78s64 42 42 78" />
+                <path class="city-stroke" d="M116 124c10-44 30-68 68-68s60 24 72 68" />
+                <path class="city-stroke" d="M104 132c50 36 112 36 162 0" />
+                <path class="city-stroke" d="M150 58c-12-20-30-22-44-4M220 58c12-20 30-22 44-4" />
+                <circle class="city-stroke" cx="160" cy="88" r="7" />
+                <circle class="city-stroke" cx="210" cy="88" r="7" />
+                <path class="city-stroke" d="M172 118c14 8 28 8 42 0" />
+                <path class="city-stroke" d="M92 176c52 44 132 52 200 12" />
+              </svg>
+            </article>
           </div>
-          <svg class="city-world-map" viewBox="0 0 1280 640" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <g class="city-contour">
-              <path d="M42 526c110-86 216-50 320-122 86-58 170-92 290-42 122 50 198 8 306-70 92-68 190-78 290-42" />
-              <path d="M66 566c126-80 244-46 358-112 90-52 170-78 272-34 126 54 222 6 334-62 84-52 154-72 230-54" />
-              <path d="M94 492c88-36 158-38 236-14 88 28 148-6 214-48 92-58 176-48 254-16 108 46 186 14 262-44" />
-              <path d="M180 398c60-48 112-74 160-80 54-8 98 10 144 36 56 32 116 26 190-10 72-36 132-58 202-46" />
-              <path d="M520 562c92-58 174-78 252-60 68 16 132 12 204-22 76-34 152-44 252-12" />
-              <path d="M0 612h1280" />
-            </g>
-            <g class="city-line">
-              <path d="M58 588h1170" />
-              <path d="M154 560c118-24 248-30 390-18 168 14 332 8 518-28" />
-              <path d="M220 616c68-50 150-78 246-84 102-8 222 6 360-14 134-18 242-46 334-84" />
-            </g>
 
-            <g class="city-structure" opacity=".95">
-              <path d="M90 562l70-108 62 108z" />
-              <path d="M112 536l40-58 38 58" />
-              <path d="M38 584h240" />
-              <path d="M70 584v-70h28v70M112 584v-100h34v100M160 584v-82h32v82M206 584v-54h30v54" />
-              <path d="M278 584c50-74 112-74 162 0" />
-              <path d="M286 584l74-82 74 82M318 548h84" />
-              <path d="M454 552l54-96 54 96M476 520h64M458 552h110" />
-            </g>
+          <!-- Layer 4: glowing route with animated highlight -->
+          <div class="scene-layer route-layer" data-scene-depth=".055" aria-hidden="true">
+            <svg viewBox="0 0 1280 720" preserveAspectRatio="none">
+              <path class="route-base" d="M246 566C420 484 524 420 616 350 728 264 852 302 940 352 1048 414 1126 350 1210 244" />
+              <path class="route-flow" d="M246 566C420 484 524 420 616 350 728 264 852 302 940 352 1048 414 1126 350 1210 244" />
+              <circle class="route-node" data-city-node="chongqing" cx="246" cy="566" r="4" />
+              <circle class="route-node" data-city-node="xian" cx="616" cy="350" r="4" />
+              <circle class="route-node" data-city-node="tianjin" cx="940" cy="352" r="4" />
+              <circle class="route-node" data-city-node="chengdu" cx="1210" cy="244" r="4" />
+            </svg>
+          </div>
 
-            <g class="city-structure" opacity=".84">
-              <path d="M548 292h222" />
-              <path d="M570 292v-40h176v40" />
-              <path d="M590 252l36-30 34 30M666 252l36-30 36 30" />
-              <path d="M608 292v-58M640 292v-42M684 292v-42M718 292v-58" />
-              <path d="M572 326h198M594 326v-34M628 326v-34M662 326v-34M696 326v-34M730 326v-34" />
-              <path d="M522 326h282" />
-              <path d="M808 326c-30-48-22-96 24-130 22 46 12 92-24 130z" />
-              <path d="M828 196v-46M814 168h28" />
-            </g>
-
-            <g class="city-structure" opacity=".82">
-              <path d="M940 472h272" />
-              <path d="M962 472v-110h210v110" />
-              <path d="M986 472v-78M1018 472v-78M1050 472v-78M1082 472v-78M1114 472v-78M1146 472v-78" />
-              <path d="M976 362c42-44 92-44 136 0" />
-              <path d="M1042 362v-86" />
-              <path d="M1018 296h50l-25-42z" />
-              <path d="M1100 472c18-92 92-126 154-70 48 46 26 124-54 148" />
-              <circle cx="1176" cy="416" r="58" />
-              <path d="M1176 358v116M1118 416h116M1138 378l76 76M1214 378l-76 76" />
-            </g>
-
-            <g class="city-structure" opacity=".66">
-              <path d="M1040 210c-22-34-4-74 38-74s60 40 38 74" />
-              <path d="M1024 238c8-42 24-64 54-64s48 22 58 64" />
-              <path d="M1016 244c40 32 88 32 128 0" />
-              <path d="M1046 176c-10-18-26-20-36-4M1110 176c10-18 26-20 36-4" />
-              <circle cx="1060" cy="198" r="6" />
-              <circle cx="1100" cy="198" r="6" />
-              <path d="M1068 222c12 8 24 8 36 0" />
-            </g>
-
-            <path class="city-route" d="M320 548C448 500 540 454 598 394 670 318 754 330 812 382 878 440 980 396 1042 328 1096 268 1148 248 1212 252" />
-            <path class="city-line" d="M320 548C454 488 530 424 600 354" stroke-dasharray="2 12" />
-            <path class="city-line" d="M602 354C760 196 910 232 1060 246" stroke-dasharray="2 14" />
-
-            <circle class="city-dot" cx="424" cy="510" r="4" />
-            <circle class="city-dot" cx="650" cy="300" r="4" />
-            <circle class="city-dot" cx="980" cy="392" r="4" />
-            <circle class="city-dot" cx="1116" cy="258" r="4" />
-            <path class="city-structure" d="M424 510v-76M650 300v-64M980 392v-70M1116 258v-60" />
-          </svg>
-          <div class="city-node city-chongqing">重庆<span>山城地理</span></div>
-          <div class="city-node city-tianjin">天津<span>建筑肌理</span></div>
-          <div class="city-node city-xian">西安<span>朝代记忆</span></div>
-          <div class="city-node city-chengdu">成都<span>城市物种</span></div>
-          <div class="city-output">
-            <span>视频内容</span>
-            <span>城市 IP</span>
-            <span>文创测试</span>
-            <span>传播增长</span>
+          <!-- Layer 5: text and interaction layer -->
+          <div class="scene-layer city-copy-layer">
+            <div class="city-copy">
+              <span class="eyebrow">CITY IP</span>
+              <h3>城市文化增长</h3>
+              <p>让城市被看见 被记住 被转化</p>
+              <div class="city-legend">
+                <span><i>地</i>地理</span>
+                <span><i>筑</i>建筑</span>
+                <span><i>遗</i>非遗</span>
+                <span><i>创</i>文创</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1875,6 +1946,67 @@
       smoothVelocity: 0
     };
 
+    const cityDepthConfig = {
+      chongqing: {
+        desktop: { x: "22%", y: "78%", z: "190px", scale: 1.18, opacity: .96, blur: "0px", glow: .75, width: "430px", parallax: .18 },
+        mobile: { x: "18%", y: "76%", z: "160px", scale: .76, opacity: .92, blur: "0px", glow: .62, width: "360px", parallax: .16 }
+      },
+      tianjin: {
+        desktop: { x: "72%", y: "68%", z: "20px", scale: .88, opacity: .74, blur: ".35px", glow: .42, width: "360px", parallax: .1 },
+        mobile: { x: "70%", y: "69%", z: "-20px", scale: .62, opacity: .68, blur: ".5px", glow: .34, width: "320px", parallax: .08 }
+      },
+      xian: {
+        desktop: { x: "52%", y: "47%", z: "-210px", scale: .76, opacity: .5, blur: ".8px", glow: .26, width: "360px", parallax: .055 },
+        mobile: { x: "50%", y: "52%", z: "-180px", scale: .52, opacity: .45, blur: ".9px", glow: .2, width: "310px", parallax: .045 }
+      },
+      chengdu: {
+        desktop: { x: "86%", y: "33%", z: "-330px", scale: .58, opacity: .42, blur: "1.2px", glow: .18, width: "300px", parallax: .035 },
+        mobile: { x: "86%", y: "41%", z: "-260px", scale: .42, opacity: .38, blur: "1.1px", glow: .16, width: "260px", parallax: .03 }
+      }
+    };
+
+    function applyCityDepthConfig() {
+      const mode = window.innerWidth <= 760 ? "mobile" : "desktop";
+      document.querySelectorAll("[data-city]").forEach((city) => {
+        const config = cityDepthConfig[city.dataset.city]?.[mode];
+        if (!config) return;
+        city.style.setProperty("--x", config.x);
+        city.style.setProperty("--y", config.y);
+        city.style.setProperty("--z", config.z);
+        city.style.setProperty("--scale", config.scale);
+        city.style.setProperty("--opacity", config.opacity);
+        city.style.setProperty("--blur", config.blur);
+        city.style.setProperty("--glow", config.glow);
+        city.style.setProperty("--w", config.width);
+        city.dataset.sceneDepth = config.parallax;
+      });
+    }
+
+    function updateSceneParallax() {
+      document.querySelectorAll("[data-scene-depth]").forEach((item) => {
+        const depth = Number(item.dataset.sceneDepth || 0);
+        const x = (state.mouseX - .5) * depth * -120;
+        const y = (state.mouseY - .5) * depth * -68 + state.smoothVelocity * depth * -1.6;
+        item.style.setProperty("--scene-x", `${x}px`);
+        item.style.setProperty("--scene-y", `${y}px`);
+      });
+    }
+
+    function setupCitySceneHover() {
+      const nodes = Array.from(document.querySelectorAll("[data-city-node]"));
+      document.querySelectorAll("[data-city]").forEach((city) => {
+        city.addEventListener("mouseenter", () => {
+          const key = city.dataset.city;
+          city.classList.add("is-active");
+          nodes.forEach((node) => node.classList.toggle("is-active", node.dataset.cityNode === key));
+        });
+        city.addEventListener("mouseleave", () => {
+          city.classList.remove("is-active");
+          nodes.forEach((node) => node.classList.remove("is-active"));
+        });
+      });
+    }
+
     function updateDepth() {
       state.scrollY = window.scrollY || 0;
       state.velocity = state.scrollY - state.lastScrollY;
@@ -1901,6 +2033,7 @@
         }
       });
 
+      updateSceneParallax();
       requestAnimationFrame(updateDepth);
     }
 
@@ -1928,6 +2061,10 @@
       state.mouseY = event.clientY / window.innerHeight;
     }, { passive: true });
 
+    window.addEventListener("resize", applyCityDepthConfig, { passive: true });
+
+    applyCityDepthConfig();
+    setupCitySceneHover();
     setupVideos();
     requestAnimationFrame(updateDepth);
   </script>
