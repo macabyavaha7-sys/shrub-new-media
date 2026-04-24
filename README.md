@@ -7,6 +7,7 @@
 - `index.html`：官网首页。
 - `assets/logo/`：灌木 logo。
 - `assets/videos/`：9:16 竖屏案例视频。
+- `assets/covers/`：从视频自动截取的预览封面。
 - `docs/`：方案资料。
 
 ## 文案规则
