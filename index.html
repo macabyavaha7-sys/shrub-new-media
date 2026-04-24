@@ -160,6 +160,66 @@
       place-items: center;
       min-height: calc(100vh - 88px);
       padding: 36px 0 94px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: -88px calc((100vw - min(var(--max), calc(100vw - 72px))) / -2) 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: #020302;
+    }
+
+    .hero-bg-layer {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      will-change: transform;
+    }
+
+    .hero-sky {
+      background-image: url("assets/hero/sky.png");
+      filter: saturate(.85) brightness(.86) contrast(1.05);
+      transform: scale(1.03);
+    }
+
+    .hero-mountains {
+      top: 30%;
+      background-image: url("assets/hero/mountains.png");
+      background-size: 110% auto;
+      background-position: center bottom;
+      opacity: .76;
+      mix-blend-mode: multiply;
+      filter: saturate(.55) brightness(.74) contrast(1.12);
+    }
+
+    .hero-palace {
+      top: 28%;
+      background-image: url("assets/hero/palace.png");
+      background-size: 116% auto;
+      background-position: center bottom;
+      opacity: .98;
+      mix-blend-mode: multiply;
+      filter: saturate(.9) brightness(.92) contrast(1.18);
+    }
+
+    .hero-gradient {
+      background:
+        url("assets/hero/gradient.png") center / cover no-repeat,
+        radial-gradient(circle at 50% 44%, rgba(0, 0, 0, .04) 0%, rgba(0, 0, 0, .46) 58%, rgba(0, 0, 0, .82) 100%),
+        linear-gradient(180deg, rgba(2, 3, 2, .36) 0%, rgba(2, 3, 2, .18) 34%, rgba(2, 3, 2, .72) 74%, #030403 100%);
+      mix-blend-mode: multiply;
+      opacity: .92;
+    }
+
+    .hero-vignette {
+      background:
+        linear-gradient(180deg, rgba(3, 4, 3, .52) 0%, rgba(3, 4, 3, .1) 30%, rgba(3, 4, 3, .18) 54%, rgba(3, 4, 3, .98) 100%),
+        radial-gradient(circle at 50% 42%, transparent 0%, rgba(0, 0, 0, .22) 42%, rgba(0, 0, 0, .78) 100%);
     }
 
     .hero-copy {
@@ -168,6 +228,7 @@
       display: grid;
       justify-items: center;
       width: min(760px, 64vw);
+      margin-top: -6vh;
       text-align: center;
     }
 
@@ -234,16 +295,7 @@
       background: rgba(0, 0, 0, .18);
     }
 
-    .space {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      transform-style: preserve-3d;
-    }
-
     .artifact,
-    .media-orbit,
     .depth-node {
       position: absolute;
       pointer-events: none;
@@ -282,154 +334,6 @@
       stroke: rgba(201, 166, 106, .14);
       stroke-width: .6;
       vector-effect: non-scaling-stroke;
-    }
-
-    .hero .tea-cup {
-      width: 620px;
-      height: 450px;
-      left: -150px;
-      bottom: -2vh;
-      --s: 1.22;
-      --o: .5;
-      z-index: 3;
-    }
-
-    .hero .tea-pot {
-      width: 500px;
-      height: 314px;
-      left: 45%;
-      top: 3vh;
-      --s: .86;
-      --o: .32;
-      --z: -110px;
-      z-index: 2;
-    }
-
-    .hero .go-board {
-      width: 700px;
-      height: 450px;
-      right: -150px;
-      bottom: -6vh;
-      --r: -7deg;
-      --s: 1;
-      --o: .38;
-      z-index: 2;
-    }
-
-    .hero .mesh-ribbon {
-      width: 720px;
-      height: 260px;
-      right: -120px;
-      top: 12vh;
-      --s: .92;
-      --o: .24;
-      z-index: 1;
-    }
-
-    .hero .chess {
-      width: 150px;
-      height: 230px;
-      right: 1vw;
-      bottom: 20vh;
-      --s: .82;
-      --o: .46;
-      z-index: 3;
-    }
-
-    .hero .system-hint {
-      position: absolute;
-      left: 0;
-      bottom: 18px;
-      z-index: 6;
-      color: rgba(244, 239, 228, .66);
-      font-size: 34px;
-      font-weight: 900;
-      letter-spacing: 0;
-    }
-
-    .hero-line {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 104px;
-      z-index: 2;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(201, 166, 106, .32), transparent);
-    }
-
-    .scroll-mark {
-      position: absolute;
-      left: 50%;
-      bottom: 72px;
-      z-index: 8;
-      width: 22px;
-      height: 38px;
-      border: 1px solid rgba(244, 239, 228, .75);
-      border-radius: 999px;
-      transform: translateX(-50%);
-    }
-
-    .scroll-mark::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 9px;
-      width: 3px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--gold-2);
-      transform: translateX(-50%);
-    }
-
-    .media-orbit {
-      overflow: hidden;
-      border: 1px solid rgba(244, 239, 228, .16);
-      border-radius: 14px;
-      background: rgba(0, 0, 0, .22);
-      box-shadow: 0 34px 90px rgba(0, 0, 0, .54);
-      transform:
-        translate3d(calc(var(--x, 0px) + var(--px, 0px)), calc(var(--y, 0px) + var(--py, 0px)), var(--z, 0px))
-        rotateX(var(--rx, 0deg))
-        rotateY(var(--ry, 0deg))
-        rotate(var(--r, 0deg));
-    }
-
-    .media-orbit img,
-    .media-orbit video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: saturate(.78) brightness(.72) contrast(1.08);
-    }
-
-    .hero-media-left {
-      width: 132px;
-      aspect-ratio: 9 / 16;
-      left: 14%;
-      top: 8%;
-      --r: -4deg;
-      z-index: 5;
-    }
-
-    .hero-media-main {
-      width: 186px;
-      aspect-ratio: 9 / 16;
-      right: 16%;
-      top: 17%;
-      --r: -3deg;
-      z-index: 5;
-    }
-
-    .hero-media-small {
-      width: 110px;
-      aspect-ratio: 9 / 16;
-      right: 4%;
-      top: 30%;
-      --r: 3deg;
-      --z: -140px;
-      opacity: .72;
-      z-index: 4;
     }
 
     .module {
@@ -1196,24 +1100,12 @@
         width: min(620px, 62vw);
       }
 
-      .hero-media-left {
-        left: 7%;
-        top: 16%;
-        width: 120px;
-        opacity: .78;
+      .hero-palace {
+        background-size: 128% auto;
       }
 
-      .hero-media-main {
-        right: 4%;
-        top: 25%;
-        width: 150px;
-        opacity: .76;
-      }
-
-      .hero-media-small {
-        right: -2%;
-        width: 86px;
-        opacity: .48;
+      .hero-mountains {
+        background-size: 126% auto;
       }
 
       .cases-layout,
@@ -1313,54 +1205,24 @@
         font-size: 14px;
       }
 
-      .hero-media-left {
-        left: -18vw;
-        top: 31%;
-        width: 116px;
+      .hero-bg {
+        inset: -74px -14px 0;
+      }
+
+      .hero-sky {
+        background-size: auto 100%;
+      }
+
+      .hero-mountains {
+        top: 34%;
+        background-size: auto 58%;
         opacity: .58;
       }
 
-      .hero-media-main {
-        right: -18vw;
-        top: 20%;
-        width: 116px;
-        opacity: .5;
-      }
-
-      .hero-media-small,
-      .scroll-mark,
-      .hero-line {
-        display: none;
-      }
-
-      .hero .tea-cup {
-        left: -180px;
-        bottom: 4vh;
-        opacity: .12;
-      }
-
-      .hero .go-board,
-      .hero .chess {
-        opacity: .08;
-      }
-
-      .hero .tea-pot {
-        left: 28%;
-        top: 13vh;
-        width: 310px;
-        height: 196px;
-        --o: .2;
-      }
-
-      .hero .mesh-ribbon {
-        right: -280px;
-        top: 24vh;
-        opacity: .16;
-      }
-
-      .hero .system-hint {
-        font-size: 34px;
-        bottom: 0;
+      .hero-palace {
+        top: 28%;
+        background-size: auto 76%;
+        opacity: .96;
       }
 
       .module {
@@ -1527,8 +1389,8 @@
         font-size: 13px;
       }
 
-      .hero-media-main {
-        display: none;
+      .hero-copy {
+        margin-top: -8vh;
       }
 
       .case-stats {
@@ -1574,69 +1436,12 @@
 
     <main id="top">
       <section class="section hero" data-section>
-        <div class="space" aria-hidden="true">
-          <div class="artifact tea-cup" data-depth=".18">
-            <svg viewBox="0 0 520 380">
-              <path class="gold-fill" d="M92 176c70-74 246-82 326-12 46 40 34 102-38 132-98 42-252 16-304-58-18-26-12-42 16-62z" />
-              <path class="gold-line" d="M66 202c74-96 268-114 362-34 44 38 34 98-36 128-104 44-264 8-326-64" />
-              <path class="gold-line" d="M398 160c68-36 110-12 116 30 6 38-34 66-82 44" />
-              <path class="gold-line" d="M118 292c82 38 216 52 330 16" />
-              <path class="gold-line" d="M116 142c-32-60-4-104 58-110 58-4 104 30 118 92" />
-              <path class="gold-line" d="M186 54c32-24 78-20 112 8" />
-            </svg>
-          </div>
-
-          <div class="artifact tea-pot" data-depth=".08">
-            <svg viewBox="0 0 430 270">
-              <path class="gold-fill" d="M146 84c48-54 126-56 176-2 44 46 38 112-18 142-60 32-156 20-200-28-34-36-20-78 42-112z" />
-              <path class="gold-line" d="M112 136c50-78 176-96 246-28 52 50 30 126-52 144-92 20-202-22-216-86" />
-              <path class="gold-line" d="M318 106c48-40 102-26 106 18 6 50-58 58-98 36" />
-              <path class="gold-line" d="M92 132c-34 2-62 12-84 32 32 18 62 16 90 2" />
-              <path class="gold-line" d="M210 36c20-28 58-28 82 0" />
-            </svg>
-          </div>
-
-          <div class="artifact go-board" data-depth=".12">
-            <svg viewBox="0 0 560 360">
-              <path class="gold-fill" d="M56 56h448v248H56z" />
-              <g class="gold-line">
-                <path d="M56 56h448v248H56z" />
-                <path d="M112 56v248M168 56v248M224 56v248M280 56v248M336 56v248M392 56v248M448 56v248" />
-                <path d="M56 104h448M56 152h448M56 200h448M56 248h448" />
-                <circle cx="168" cy="152" r="13" />
-                <circle cx="280" cy="248" r="18" />
-                <circle cx="392" cy="200" r="12" />
-              </g>
-            </svg>
-          </div>
-
-          <div class="artifact mesh-ribbon" data-depth=".06">
-            <svg viewBox="0 0 720 260">
-              <g class="gold-line">
-                <path d="M0 146c92-44 164-62 254-28 72 28 124 84 216 48 82-32 138-112 250-78" />
-                <path d="M0 176c96-42 172-54 252-18 78 34 126 76 220 34 82-38 142-92 248-66" />
-                <path d="M20 118c92-18 174 10 248 54 72 42 150 10 232-40 74-46 144-44 206-18" />
-                <path d="M80 120c44 18 76 50 104 88M184 100c50 38 86 78 112 124M304 116c44 42 78 68 118 78M438 168c34-40 72-76 114-104M560 128c42-18 86-24 132-16" />
-              </g>
-            </svg>
-          </div>
-
-          <div class="artifact chess" data-depth=".16">
-            <svg viewBox="0 0 150 230">
-              <path class="gold-line" d="M72 18c28 34 20 72-12 92 42 10 56 38 30 72h34v28H24v-28h34c-26-34-12-62 30-72-32-20-40-58-16-92z" />
-              <path class="gold-line" d="M36 210h78" />
-            </svg>
-          </div>
-
-          <div class="media-orbit hero-media-left" data-depth=".16">
-            <img src="assets/covers/video-08.png" alt="" />
-          </div>
-          <div class="media-orbit hero-media-main" data-depth=".1">
-            <img src="assets/covers/video-09.png" alt="" />
-          </div>
-          <div class="media-orbit hero-media-small" data-depth=".05">
-            <img src="assets/covers/video-17.png" alt="" />
-          </div>
+        <div class="hero-bg" aria-hidden="true">
+          <div class="hero-bg-layer hero-sky"></div>
+          <div class="hero-bg-layer hero-mountains"></div>
+          <div class="hero-bg-layer hero-palace"></div>
+          <div class="hero-bg-layer hero-gradient"></div>
+          <div class="hero-bg-layer hero-vignette"></div>
         </div>
 
         <div class="hero-copy" data-depth=".04">
@@ -1647,10 +1452,6 @@
             <a class="action alt" href="#contact">业务沟通</a>
           </div>
         </div>
-
-        <div class="hero-line" aria-hidden="true"></div>
-        <div class="scroll-mark" aria-hidden="true"></div>
-        <div class="system-hint">内容增长系统</div>
       </section>
 
       <section class="module" id="system" data-section>
@@ -2023,7 +1824,7 @@
         const rx = (state.mouseY - .5) * depth * 3;
         const ry = (state.mouseX - .5) * depth * -4;
 
-        if (item.classList.contains("artifact") || item.classList.contains("case-decor") || item.classList.contains("media-orbit") || item.classList.contains("case-item")) {
+        if (item.classList.contains("artifact") || item.classList.contains("case-decor") || item.classList.contains("case-item")) {
           item.style.setProperty("--px", `${x}px`);
           item.style.setProperty("--py", `${y}px`);
           item.style.setProperty("--rx", `${rx}deg`);
